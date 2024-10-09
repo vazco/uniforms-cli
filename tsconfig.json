@@ -8,6 +8,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
   },
-  "include": ["src", "build.config.ts"],
+  "include": ["src", "build.config.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

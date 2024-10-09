@@ -10,7 +10,7 @@
   "files": [
     "dist/index.mjs",
     "index.js",
-    "templates"
+    "src/templates"
   ],
   "scripts": {
     "build": "unbuild"
