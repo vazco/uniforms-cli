@@ -25,7 +25,7 @@ export const init = new Command()
     `Select a theme (${Object.values(Themes).join(', ')})`,
   )
   .option(
-    '-pm, --packageManager <projectName>',
+    '-pm, --packageManager <packageManager>',
     `Select a package manager (${Object.values(Themes).join(', ')})`,
   )
   .action(async (options) => {
