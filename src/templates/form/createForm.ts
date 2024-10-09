@@ -1,6 +1,7 @@
 import { bridgeImports, themeImports } from '../../consts';
 import { Bridges, Themes } from '../../types';
 import { formSchemas } from '../../schemas';
+import { red } from 'kolorist';
 
 type CreateFormArgs = {
   theme: Themes;
@@ -9,12 +10,11 @@ type CreateFormArgs = {
 
 export const createForm = ({ theme, bridge }: CreateFormArgs) => {
   const bridgeImport = bridgeImports[bridge];
-  const themeImport = themeImports[theme];
+  const themeImport = `import { AutoForm } from '${themeImports[theme]}'`;
   if (!bridgeImport || !themeImports) {
-    // todo - handle error
-    console.log('no bridge or theme');
-    return;
+    throw new Error(red('No bridge or theme'));
   }
   const schemaCode = formSchemas[bridge];
-  return `${themeImport}\n${schemaCode}\n\n${'<AutoForm schema={bridge} />'}`;
+  const componentCode = `export const Form = () => <AutoForm schema={bridge} />`;
+  return `${themeImport}\n${schemaCode}\n\n${componentCode}`;
 };

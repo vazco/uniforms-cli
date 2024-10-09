@@ -97,3 +97,8 @@ export const themeImports = {
   Bootstrap5: 'uniforms-bootstrap5',
   AntD: 'uniforms-antd',
 };
+
+export const fileTypes = [
+  { color: blue, title: '.tsx', value: 'tsx' },
+  { color: red, title: '.jsx', value: 'jsx' },
+];
