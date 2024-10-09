@@ -60,7 +60,7 @@ export const createForm = new Command()
   .option('-s, --skip', 'skip custom dir question, and create in current dir')
   .option(
     '-e, --extension <extension>',
-    `Select extension (${fileTypes.join(', ')})`,
+    `Select extension (${fileTypes.map(({ value }) => value).join(', ')})`,
   )
   .action(async (options) => {
     const { skip: skipFlag, extension: extensionFlag } = options;
