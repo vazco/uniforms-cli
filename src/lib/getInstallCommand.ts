@@ -9,6 +9,6 @@ export const getInstallCommand = (packageManager: PackageManagers) => {
     case PackageManagers.PNPM:
       return 'pnpm add';
     default:
-      return 'npm install';
+      return undefined;
   }
 };

@@ -10,16 +10,39 @@ import { isDirEmpty } from '../../lib/isDirEmpty';
 import { getInstallCommand } from '../../lib/getInstallCommand';
 import { Bridges, Themes } from '../../types';
 import { getPromptsWithoutPackageJson } from './prompts/promptsWithoutPackageJson';
-import { withPackageJsonPrompts } from './prompts/withPackageJsonPrompts';
-import { defaultPrompts } from './prompts/defualtPrompts';
+import { getWithPackageJsonPrompts } from './prompts/withPackageJsonPrompts';
+import { getDefaultPrompts } from './prompts/defualtPrompts';
 
 export const init = new Command()
   .name('init')
   .description('Initialize uniforms in your project and install dependencies')
-  .action(async () => {
+  .option(
+    '-b, --bridge <bridge>',
+    `Select a bridge (${Object.values(Bridges).join(', ')})`,
+  )
+  .option(
+    '-t, --theme <theme>',
+    `Select a theme (${Object.values(Themes).join(', ')})`,
+  )
+  .option(
+    '-pm, --packageManager <projectName>',
+    `Select a package manager (${Object.values(Themes).join(', ')})`,
+  )
+  .action(async (options) => {
+    const {
+      bridge: bridgeFlag,
+      theme: themeFlag,
+      packageManager: packageManagerFlag,
+    } = options;
     const packageJsonPath = await findNearestPackageJson();
     const packageJsonDir = packageJsonPath?.split('/').slice(0, -1).join('/');
     const withoutPackageJsonPrompts = getPromptsWithoutPackageJson();
+    const defaultPrompts = getDefaultPrompts({
+      bridge: bridgeFlag,
+      theme: themeFlag,
+    });
+    const withPackageJsonPrompts =
+      getWithPackageJsonPrompts(packageManagerFlag);
 
     let result: prompts.Answers<
       'bridge' | 'theme' | 'projectName' | 'packageManager' | 'overwrite'
@@ -45,9 +68,14 @@ export const init = new Command()
     }
 
     const { bridge, theme, packageManager, projectName, overwrite } = result;
-    const installCommand = getInstallCommand(packageManager);
-    const bridgePackage = bridgeImports[bridge as Bridges]?.package;
-    const themePackage = themeImports[theme as Themes];
+    const installCommand =
+      getInstallCommand(packageManagerFlag) ||
+      getInstallCommand(packageManager);
+    const bridgePackage =
+      bridgeImports[bridgeFlag as Bridges]?.package ||
+      bridgeImports[bridge as Bridges]?.package;
+    const themePackage =
+      themeImports[themeFlag as Themes] || themeImports[theme as Themes];
     const installCommandLine = `${installCommand} uniforms ${bridgePackage} ${themePackage}`;
 
     if (!packageJsonPath) {
