@@ -57,7 +57,16 @@ const customDirPathPrompt: PromptObject = {
 export const createForm = new Command()
   .name('createForm')
   .description('Creates new uniforms form template')
-  .action(async () => {
+  .option('-s, --skip', 'skip custom dir question, and create in current dir')
+  .option(
+    '-e, --extension <extension>',
+    `Select extension (${fileTypes.join(', ')})`,
+  )
+  .action(async (options) => {
+    const { skip: skipFlag, extension: extensionFlag } = options;
+    const findExtension = fileTypes.find(
+      ({ value }) => value === extensionFlag,
+    );
     const bridgePackages = Object.values(Bridges);
     const themePackages = Object.values(Themes);
 
@@ -78,14 +87,16 @@ export const createForm = new Command()
     try {
       result = await prompts(
         [
-          extensionPrompt,
+          // @ts-expect-error
+          ...[findExtension ? [] : extensionPrompt],
           // @ts-expect-error
           ...[
             existingBridges.length > 1 ? getBridgePrompt(existingBridges) : [],
           ],
           // @ts-expect-error
           ...[existingThemes.length > 1 ? getThemePrompt(existingThemes) : []],
-          customDirPrompt,
+          // @ts-expect-error
+          ...[skipFlag ? [] : customDirPrompt],
         ],
         {
           onCancel: (error) => {
@@ -119,7 +130,7 @@ export const createForm = new Command()
     createFile(
       theme ?? existingThemes[0],
       bridge ?? existingBridges[0],
-      extension,
+      findExtension || extension,
       directory,
       customDirPath,
     );
