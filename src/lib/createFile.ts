@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { red } from 'kolorist';
 import { createForm } from '../templates/form/createForm';
 import { Bridges, Themes } from '../types';
-import { red } from 'kolorist';
 
 export const createFile = (
   theme: Themes,
