@@ -13,3 +13,9 @@ export enum Themes {
   Bootstrap5 = 'Bootstrap5',
   AntD = 'AntD',
 }
+
+export enum PackageManagers {
+  NPM = 'npm',
+  YARN = 'yarn',
+  PNPM = 'pnpm',
+}

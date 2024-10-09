@@ -2,11 +2,20 @@ import { Command } from 'commander';
 import prompts, { PromptObject } from 'prompts';
 import { bold, red } from 'kolorist';
 import { existsSync } from 'node:fs';
-import { exec } from 'node:child_process';
+import { execSync } from 'node:child_process';
 import { findNearestPackageJson } from '../../lib/findNearestPackageJson';
-import { bridges, defaultTargetDir, themes } from '../../consts';
+import {
+  bridgeImports,
+  bridges,
+  defaultTargetDir,
+  packageManagers,
+  themeImports,
+  themes,
+} from '../../consts';
 import { getTargetDir } from '../../lib/getTargetDir';
 import { isDirEmpty } from '../../lib/isDirEmpty';
+import { getInstallCommand } from '../../lib/getInstallCommand';
+import { Bridges, Themes } from '../../types';
 
 const defaultPrompts: PromptObject[] = [
   {
@@ -32,6 +41,22 @@ const defaultPrompts: PromptObject[] = [
         return {
           title: variantColor(theme.name),
           value: theme.name,
+        };
+      }),
+  },
+];
+
+const withPackageJsonPrompts: PromptObject[] = [
+  {
+    type: 'select',
+    name: 'packageManager',
+    message: bold('Select a package manager:'),
+    choices: () =>
+      packageManagers.map((pm) => {
+        const variantColor = pm.color;
+        return {
+          title: variantColor(pm.name),
+          value: pm.name,
         };
       }),
   },
@@ -79,13 +104,17 @@ export const init = new Command()
     const packageJsonPath = await findNearestPackageJson();
     const withoutPackageJsonPrompts = getPromptsWithoutPackageJson();
 
-    let result: prompts.Answers<'bridge' | 'theme' | 'projectName'>;
+    let result: prompts.Answers<
+      'bridge' | 'theme' | 'projectName' | 'packageManager'
+    >;
 
     try {
       result = await prompts(
         [
           ...defaultPrompts,
-          ...(packageJsonPath ? [] : withoutPackageJsonPrompts),
+          ...(packageJsonPath
+            ? withPackageJsonPrompts
+            : withoutPackageJsonPrompts),
         ],
         {
           onCancel: () => {
@@ -98,5 +127,13 @@ export const init = new Command()
       return;
     }
 
-    console.log(packageJsonPath, result);
+    const { bridge, theme, packageManager } = result;
+    const installCommand = getInstallCommand(packageManager);
+    const bridgePackage = bridgeImports[bridge as Bridges]?.package;
+    const themePackage = themeImports[theme as Themes];
+    const installCommandLine = `${installCommand} uniforms ${bridgePackage} ${themePackage}`;
+
+    execSync(`cd ${defaultTargetDir} && ${installCommandLine}`, {
+      stdio: 'inherit',
+    });
   });

@@ -1,48 +1,73 @@
-import { blue, cyan, green, lightBlue, lightMagenta, lightRed } from 'kolorist';
+import {
+  blue,
+  cyan,
+  green,
+  lightBlue,
+  lightMagenta,
+  lightRed,
+  red,
+  yellow,
+} from 'kolorist';
+import { Bridges, PackageManagers, Themes } from '../types';
 
 export const bridges = [
   {
-    name: 'GraphQl',
+    name: Bridges.GraphQL,
     color: lightMagenta,
   },
   {
-    name: 'JSON-Schema',
+    name: Bridges.JSONSchema,
     color: blue,
   },
   {
-    name: 'Simple-Schema',
+    name: Bridges.SimpleSchema,
     color: lightRed,
   },
   {
-    name: 'Simple-Schema-2',
+    name: Bridges.SimpleSchema2,
     color: green,
   },
   {
-    name: 'Zod',
+    name: Bridges.ZOD,
     color: cyan,
   },
 ];
 
 export const themes = [
   {
-    name: 'Semantic',
+    name: Themes.Semantic,
     color: cyan,
   },
   {
-    name: 'MUI',
+    name: Themes.MUI,
     color: lightBlue,
   },
   {
-    name: 'Bootstrap4',
+    name: Themes.Bootstrap4,
     color: green,
   },
   {
-    name: 'Bootstrap5',
+    name: Themes.Bootstrap5,
     color: green,
   },
   {
-    name: 'AntD',
+    name: Themes.AntD,
     color: lightRed,
+  },
+];
+
+export const packageManagers = [
+  {
+    name: PackageManagers.NPM,
+    color: red,
+  },
+  {
+    name: PackageManagers.YARN,
+    color: blue,
+  },
+  {
+    name: PackageManagers.PNPM,
+    color: yellow,
   },
 ];
 
