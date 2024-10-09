@@ -3,7 +3,6 @@ import prompts from 'prompts';
 import { bold, red } from 'kolorist';
 import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { execSync } from 'node:child_process';
-import ora from 'ora';
 import { join } from 'node:path';
 import { findNearestPackageJson } from '../../lib/findNearestPackageJson';
 import { bridgeImports, themeImports } from '../../consts';
@@ -53,7 +52,7 @@ export const init = new Command()
 
     if (!packageJsonPath) {
       const root = join(process.cwd(), projectName);
-      const spinner = ora('Installing dependencies...').start();
+      console.log('Installing dependencies...');
       try {
         if (overwrite) {
           isDirEmpty(root);
@@ -63,22 +62,26 @@ export const init = new Command()
         } else if (!existsSync(root)) {
           mkdirSync(root, { recursive: true });
         }
-        execSync(`cd ${root} && ${installCommandLine}`, {
-          stdio: 'inherit',
-        });
-        spinner.succeed('Dependencies installed successfully.');
+        execSync(`cd ${root} && npm init`, { stdio: 'inherit' });
+        execSync(
+          `cd ${root} && npm install uniforms ${bridgePackage} ${themePackage}`,
+          {
+            stdio: 'inherit',
+          },
+        );
+        console.log('Dependencies installed successfully.');
       } catch (error) {
-        spinner.fail('Failed to install dependencies.');
+        console.log('Failed to install dependencies.');
       }
     } else {
-      const spinner = ora('Installing dependencies...').start();
+      console.log('Installing dependencies...');
       try {
         execSync(`cd ${packageJsonDir} && ${installCommandLine}`, {
           stdio: 'inherit',
         });
-        spinner.succeed('Dependencies installed successfully.');
+        console.log('Dependencies installed successfully.');
       } catch (error) {
-        spinner.fail('Failed to install dependencies.');
+        console.log('Failed to install dependencies.');
       }
     }
   });
