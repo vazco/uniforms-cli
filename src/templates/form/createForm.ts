@@ -1,5 +1,6 @@
 import { bridgeImports, themeImports } from '../../consts';
 import { Bridges, Themes } from '../../types';
+import { formSchemas } from '../../schemas';
 
 type CreateFormArgs = {
   theme: Themes;
@@ -14,9 +15,6 @@ export const createForm = ({ theme, bridge }: CreateFormArgs) => {
     console.log('no bridge or theme');
     return;
   }
-  const bridgeImportString = `import ${bridgeImport.variable} from "${bridgeImport.package}"`;
-  const themeImportString = `import { AutoField } from ${themeImport}`;
-
-  const totalImports = `${bridgeImportString}\n${themeImportString}`;
-  console.log(totalImports);
+  const schemaCode = formSchemas[bridge];
+  return `${themeImport}\n${schemaCode}\n\n${'<AutoForm schema={bridge} />'}`;
 };
