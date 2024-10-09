@@ -4,23 +4,16 @@ import { buildASTSchema, parse } from 'graphql';
 
 const schema = \`
     type Author {
-        id:        String!
-        firstName: String
-        lastName:  String
-    }
-
-    type Post {
-        id:     Int!
-        author: Author!
-        title:  String
-        votes:  Int
+        name: String!
+        birthYear: Int
+        bookCount: Int
     }
 
     # This is required by buildASTSchema
     type Query { anything: ID }
 \`;
 
-const schemaType = buildASTSchema(parse(schema)).getType('Post');
+const schemaType = buildASTSchema(parse(schema)).getType('Author');
 const schemaExtras = {
   id: {
     options: [
@@ -58,8 +51,6 @@ const schemaValidator = (model: object) => {
     });
   }
 
-  // ...
-
   return details.length ? { details } : null;
 };
 
@@ -78,15 +69,15 @@ const schema = {
   title: 'Person',
   type: 'object',
   properties: {
-    firstName: { type: 'string' },
-    lastName: { type: 'string' },
-    age: {
-      description: 'Age in years',
+    authorName: { type: 'string' },
+    birthYear: { type: 'integer' },
+    bookCount: {
+      description: 'Count of books created by author',
       type: 'integer',
       minimum: 0,
     },
   },
-  required: ['firstName', 'lastName'],
+  required: ['authorName'],
 };
 
 function createValidator(schema: object) {
@@ -106,17 +97,17 @@ const SimpleSchema2Bridge = `import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 
 const schema = new SimpleSchema({
-  // ...
-
-  aboutMe: {
+  authorName: {
     type: String,
-    uniforms: MyText, // Component...
-    uniforms: {
-      // ...or object...
-      component: MyText, // ...with component...
-      propA: 1, // ...and/or extra props.
-    },
   },
+  birthYear: {
+    type: Number,
+    optional: true,
+  },
+  bookCount: {
+    type: Number,
+    optional: true,
+  }
 });
 
 const bridge = new SimpleSchema2Bridge({ schema });`;
@@ -125,17 +116,17 @@ const SimpleSchemaBridge = `import SimpleSchemaBridge from 'uniforms-bridge-simp
 import { SimpleSchema } from 'aldeed:simple-schema';
 
 const schema = new SimpleSchema({
-  // ...
-
-  aboutMe: {
+  authorName: {
     type: String,
-    uniforms: MyText, // Component...
-    uniforms: {
-      // ...or object...
-      component: MyText, // ...with component...
-      propA: 1, // ...and/or extra props.
-    },
   },
+  birthYear: {
+    type: Number,
+    optional: true,
+  },
+  bookCount: {
+    type: Number,
+    optional: true,
+  }
 });
 
 const bridge = new SimpleSchemaBridge({ schema });`;
@@ -143,7 +134,7 @@ const bridge = new SimpleSchemaBridge({ schema });`;
 const ZodBridge = `import ZodBridge from 'uniforms-bridge-zod';
 import z from 'zod';
 
-const schema = z.object({ aboutMe: z.string() });
+const schema = z.object({ authorName: z.string(), birthYear: z.number(), bookCount: z.number() });
 
 const bridge = new ZodBridge({ schema });`;
 
