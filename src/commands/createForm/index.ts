@@ -1,11 +1,7 @@
 import prompts, { PromptObject } from 'prompts';
 import { bold, red } from 'kolorist';
 import { Command } from 'commander';
-import {
-  fileTypes,
-  packagesToBridges,
-  packagesToThemes,
-} from '../../consts';
+import { fileTypes, packagesToBridges, packagesToThemes } from '../../consts';
 import { getThemeAndBridgeFromPackageJSON } from '../../lib/getThemeAndBridgeFromPackageJSON';
 import { findNearestPackageJson } from '../../lib/findNearestPackageJson';
 import { Bridges, Themes } from '../../types';
@@ -141,7 +137,7 @@ export const createForm = new Command()
     createFile(
       theme,
       bridge,
-      findExtension || extension,
+      findExtension?.value || extension,
       directory,
       customDirPath,
     );
