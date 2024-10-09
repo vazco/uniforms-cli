@@ -16,6 +16,7 @@ import { getTargetDir } from '../../lib/getTargetDir';
 import { isDirEmpty } from '../../lib/isDirEmpty';
 import { getInstallCommand } from '../../lib/getInstallCommand';
 import { Bridges, Themes } from '../../types';
+import ora from 'ora';
 
 const defaultPrompts: PromptObject[] = [
   {
@@ -102,6 +103,7 @@ export const init = new Command()
   .description('initialize uniforms in your project and install dependencies')
   .action(async () => {
     const packageJsonPath = await findNearestPackageJson();
+    const packageJsonDir = packageJsonPath?.split('/').slice(0, -1).join('/');
     const withoutPackageJsonPrompts = getPromptsWithoutPackageJson();
 
     let result: prompts.Answers<
@@ -133,7 +135,13 @@ export const init = new Command()
     const themePackage = themeImports[theme as Themes];
     const installCommandLine = `${installCommand} uniforms ${bridgePackage} ${themePackage}`;
 
-    execSync(`cd ${defaultTargetDir} && ${installCommandLine}`, {
-      stdio: 'inherit',
-    });
+    const spinner = ora('Installing dependencies...').start();
+    try {
+      execSync(`cd ${packageJsonDir} && ${installCommandLine}`, {
+        stdio: 'inherit',
+      });
+      spinner.succeed('Dependencies installed successfully.');
+    } catch (error) {
+      spinner.fail('Failed to install dependencies.');
+    }
   });
