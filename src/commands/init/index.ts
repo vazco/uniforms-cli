@@ -62,7 +62,9 @@ export const init = new Command()
         } else if (!existsSync(root)) {
           mkdirSync(root, { recursive: true });
         }
-        execSync(`cd ${root} && npm init`, { stdio: 'inherit' });
+        console.log('Creating package.json...');
+        execSync(`cd ${root} && npm init -y`, { stdio: 'inherit' });
+        console.log('package.json created successfully.');
         execSync(
           `cd ${root} && npm install uniforms ${bridgePackage} ${themePackage}`,
           {
