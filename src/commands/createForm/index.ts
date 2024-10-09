@@ -116,5 +116,11 @@ export const createForm = new Command()
     }
     const { theme, extension, bridge } = result;
     const directory = process.cwd();
-    createFile(theme, bridge, extension, directory, customDirPath);
+    createFile(
+      theme ?? existingThemes[0],
+      bridge ?? existingBridges[0],
+      extension,
+      directory,
+      customDirPath,
+    );
   });
