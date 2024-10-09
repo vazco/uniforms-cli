@@ -1,114 +1,29 @@
 import { Command } from 'commander';
-import prompts, { PromptObject } from 'prompts';
+import prompts from 'prompts';
 import { bold, red } from 'kolorist';
 import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import ora from 'ora';
 import { join } from 'node:path';
 import { findNearestPackageJson } from '../../lib/findNearestPackageJson';
-import {
-  bridgeImports,
-  bridges,
-  defaultTargetDir,
-  packageManagers,
-  themeImports,
-  themes,
-} from '../../consts';
-import { getTargetDir } from '../../lib/getTargetDir';
+import { bridgeImports, themeImports } from '../../consts';
 import { isDirEmpty } from '../../lib/isDirEmpty';
 import { getInstallCommand } from '../../lib/getInstallCommand';
 import { Bridges, Themes } from '../../types';
-
-const defaultPrompts: PromptObject[] = [
-  {
-    type: 'select',
-    name: 'bridge',
-    message: bold('Select a bridge:'),
-    choices: () =>
-      bridges.map((bridge) => {
-        const variantColor = bridge.color;
-        return {
-          title: variantColor(bridge.name),
-          value: bridge.name,
-        };
-      }),
-  },
-  {
-    type: 'select',
-    name: 'theme',
-    message: bold('Select a theme:'),
-    choices: () =>
-      themes.map((theme) => {
-        const variantColor = theme.color;
-        return {
-          title: variantColor(theme.name),
-          value: theme.name,
-        };
-      }),
-  },
-];
-
-const withPackageJsonPrompts: PromptObject[] = [
-  {
-    type: 'select',
-    name: 'packageManager',
-    message: bold('Select a package manager:'),
-    choices: () =>
-      packageManagers.map((pm) => {
-        const variantColor = pm.color;
-        return {
-          title: variantColor(pm.name),
-          value: pm.name,
-        };
-      }),
-  },
-];
-
-const getPromptsWithoutPackageJson = (): PromptObject[] => {
-  let targetDir = defaultTargetDir;
-  return [
-    {
-      type: 'text',
-      name: 'projectName',
-      message: bold('Project name:'),
-      initial: defaultTargetDir,
-      onState: (state: { value: string }) => {
-        targetDir = getTargetDir(state.value) || defaultTargetDir;
-      },
-    },
-    {
-      type: () =>
-        !existsSync(targetDir) || isDirEmpty(targetDir) ? null : 'confirm',
-      name: 'overwrite',
-      message: () =>
-        `${
-          targetDir === '.'
-            ? 'Current directory'
-            : `Target directory "${targetDir}"`
-        } is not empty. Remove existing files and continue?`,
-    },
-    {
-      type: (_, { overwrite }: { overwrite?: boolean }) => {
-        if (overwrite === false) {
-          throw new Error(`${red('✖')} Operation cancelled`);
-        }
-        return null;
-      },
-      name: 'overwriteChecker',
-    },
-  ];
-};
+import { getPromptsWithoutPackageJson } from './prompts/promptsWithoutPackageJson';
+import { withPackageJsonPrompts } from './prompts/withPackageJsonPrompts';
+import { defaultPrompts } from './prompts/defualtPrompts';
 
 export const init = new Command()
   .name('init')
-  .description('initialize uniforms in your project and install dependencies')
+  .description('Initialize uniforms in your project and install dependencies')
   .action(async () => {
     const packageJsonPath = await findNearestPackageJson();
     const packageJsonDir = packageJsonPath?.split('/').slice(0, -1).join('/');
     const withoutPackageJsonPrompts = getPromptsWithoutPackageJson();
 
     let result: prompts.Answers<
-      'bridge' | 'theme' | 'projectName' | 'packageManager'
+      'bridge' | 'theme' | 'projectName' | 'packageManager' | 'overwrite'
     >;
 
     try {
