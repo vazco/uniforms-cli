@@ -1,8 +1,10 @@
 import { Command } from 'commander';
 import prompts, { PromptObject } from 'prompts';
 import { bold, red } from 'kolorist';
-import { existsSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import ora from 'ora';
+import { join } from 'node:path';
 import { findNearestPackageJson } from '../../lib/findNearestPackageJson';
 import {
   bridgeImports,
@@ -16,7 +18,6 @@ import { getTargetDir } from '../../lib/getTargetDir';
 import { isDirEmpty } from '../../lib/isDirEmpty';
 import { getInstallCommand } from '../../lib/getInstallCommand';
 import { Bridges, Themes } from '../../types';
-import ora from 'ora';
 
 const defaultPrompts: PromptObject[] = [
   {
@@ -129,19 +130,40 @@ export const init = new Command()
       return;
     }
 
-    const { bridge, theme, packageManager } = result;
+    const { bridge, theme, packageManager, projectName, overwrite } = result;
     const installCommand = getInstallCommand(packageManager);
     const bridgePackage = bridgeImports[bridge as Bridges]?.package;
     const themePackage = themeImports[theme as Themes];
     const installCommandLine = `${installCommand} uniforms ${bridgePackage} ${themePackage}`;
 
-    const spinner = ora('Installing dependencies...').start();
-    try {
-      execSync(`cd ${packageJsonDir} && ${installCommandLine}`, {
-        stdio: 'inherit',
-      });
-      spinner.succeed('Dependencies installed successfully.');
-    } catch (error) {
-      spinner.fail('Failed to install dependencies.');
+    if (!packageJsonPath) {
+      const root = join(process.cwd(), projectName);
+      const spinner = ora('Installing dependencies...').start();
+      try {
+        if (overwrite) {
+          isDirEmpty(root);
+          readdirSync(root).forEach((f) =>
+            rmSync(`${root}/${f}`, { recursive: true }),
+          );
+        } else if (!existsSync(root)) {
+          mkdirSync(root, { recursive: true });
+        }
+        execSync(`cd ${root} && ${installCommandLine}`, {
+          stdio: 'inherit',
+        });
+        spinner.succeed('Dependencies installed successfully.');
+      } catch (error) {
+        spinner.fail('Failed to install dependencies.');
+      }
+    } else {
+      const spinner = ora('Installing dependencies...').start();
+      try {
+        execSync(`cd ${packageJsonDir} && ${installCommandLine}`, {
+          stdio: 'inherit',
+        });
+        spinner.succeed('Dependencies installed successfully.');
+      } catch (error) {
+        spinner.fail('Failed to install dependencies.');
+      }
     }
   });
