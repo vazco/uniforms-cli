@@ -1,10 +1,9 @@
 {
   "name": "uniforms-cli",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "CLI for uniforms",
   "type": "module",
   "license": "MIT",
-  "main": "index.js",
   "engines": {
     "node": ">=16.0.0"
   },
@@ -13,20 +12,23 @@
     "index.js",
     "templates"
   ],
+  "scripts": {
+    "build": "unbuild"
+  },
   "bin": {
-    "uniforms": "index.js"
+    "uniforms-cli": "index.js"
   },
   "devDependencies": {
     "@types/prompts": "2.4.2",
+    "commander": "12.1.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "18.0.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-react": "7.37.1",
     "kolorist": "1.7.0",
-    "minimist": "1.2.8",
     "prettier": "3.3.3",
-    "prompts": "2.4.2",
+    "prompts": "^2.4.2",
     "typescript": "5.6.3",
     "typescript-eslint": "8.8.1",
     "unbuild": "2.0.0"
