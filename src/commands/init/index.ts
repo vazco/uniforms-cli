@@ -40,7 +40,7 @@ export const init = new Command()
         },
       );
     } catch (error: any) {
-      console.log(error.message);
+      console.log(red(error.message));
       return;
     }
 
@@ -73,7 +73,7 @@ export const init = new Command()
         );
         console.log('Dependencies installed successfully.');
       } catch (error) {
-        console.log('Failed to install dependencies.');
+        console.log(red('Failed to install dependencies.'));
       }
     } else {
       console.log('Installing dependencies...');
@@ -83,7 +83,7 @@ export const init = new Command()
         });
         console.log('Dependencies installed successfully.');
       } catch (error) {
-        console.log('Failed to install dependencies.');
+        console.log(red('Failed to install dependencies.'));
       }
     }
   });
