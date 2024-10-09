@@ -90,12 +90,28 @@ export const bridgeImports = {
   Zod: { variable: 'ZodBridge', package: 'uniforms-bridge-zod' },
 };
 
+export const packagesToBridges = {
+  'uniforms-bridge-graphql': 'GraphQl',
+  'uniforms-bridge-simple-schema': 'Simple-Schema',
+  'uniforms-bridge-simple-schema-2': 'Simple-Schema-2',
+  'uniforms-bridge-json-schema': 'JSON-schema',
+  'uniforms-bridge-zod': 'Zod',
+};
+
 export const themeImports = {
   Semantic: 'uniforms-semantic',
   MUI: 'uniforms-mui',
   Bootstrap4: 'uniforms-bootstrap4',
   Bootstrap5: 'uniforms-bootstrap5',
   AntD: 'uniforms-antd',
+};
+
+export const packagesToThemes = {
+  'uniforms-semantic': 'Semantic',
+  'uniforms-mui': 'MUI',
+  'uniforms-bootstrap4': 'Bootstrap4',
+  'uniforms-bootstrap5': 'Bootstrap5',
+  'uniforms-antd': 'AntD',
 };
 
 export const fileTypes = [

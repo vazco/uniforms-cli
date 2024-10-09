@@ -1,7 +1,11 @@
 import prompts, { PromptObject } from 'prompts';
 import { bold, red } from 'kolorist';
 import { Command } from 'commander';
-import { fileTypes } from '../../consts';
+import {
+  fileTypes,
+  packagesToBridges,
+  packagesToThemes,
+} from '../../consts';
 import { getThemeAndBridgeFromPackageJSON } from '../../lib/getThemeAndBridgeFromPackageJSON';
 import { findNearestPackageJson } from '../../lib/findNearestPackageJson';
 import { Bridges, Themes } from '../../types';
@@ -67,8 +71,9 @@ export const createForm = new Command()
     const findExtension = fileTypes.find(
       ({ value }) => value === extensionFlag,
     );
-    const bridgePackages = Object.values(Bridges);
-    const themePackages = Object.values(Themes);
+    const bridgePackages = Object.keys(packagesToBridges);
+
+    const themePackages = Object.keys(packagesToThemes);
 
     const packageJsonPath = await findNearestPackageJson();
     if (!packageJsonPath) {
@@ -125,11 +130,17 @@ export const createForm = new Command()
         return;
       }
     }
-    const { theme, extension, bridge } = result;
+    const { theme: themePackage, extension, bridge: bridgePackage } = result;
+    const bridge =
+      // @ts-expect-error
+      packagesToBridges[bridgePackage ?? (existingBridges[0] as string)];
+    const theme =
+      // @ts-expect-error
+      packagesToThemes[themePackage ?? (existingThemes[0] as string)];
     const directory = process.cwd();
     createFile(
-      theme ?? existingThemes[0],
-      bridge ?? existingBridges[0],
+      theme,
+      bridge,
       findExtension || extension,
       directory,
       customDirPath,
