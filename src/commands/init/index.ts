@@ -2,8 +2,9 @@ import { Command } from 'commander';
 import prompts, { PromptObject } from 'prompts';
 import { bold, red } from 'kolorist';
 import { existsSync } from 'node:fs';
+import { exec } from 'node:child_process';
 import { findNearestPackageJson } from '../../lib/findNearestPackageJson';
-import { bridges, defaultTargetDir, themes } from '../../conts';
+import { bridges, defaultTargetDir, themes } from '../../consts';
 import { getTargetDir } from '../../lib/getTargetDir';
 import { isDirEmpty } from '../../lib/isDirEmpty';
 
@@ -78,7 +79,7 @@ export const init = new Command()
     const packageJsonPath = await findNearestPackageJson();
     const withoutPackageJsonPrompts = getPromptsWithoutPackageJson();
 
-    let result: prompts.Answers<'bridge' | 'theme'>;
+    let result: prompts.Answers<'bridge' | 'theme' | 'projectName'>;
 
     try {
       result = await prompts(
@@ -96,5 +97,6 @@ export const init = new Command()
       console.log(error.message);
       return;
     }
-    console.log(result);
+
+    console.log(packageJsonPath, result);
   });
