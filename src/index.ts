@@ -7,7 +7,7 @@ import { miau } from './commands/miau';
 (async () => {
   const program = new Command();
 
-  program.version(version).description('CLI for uniforms');
+  program.version(version).description('CLI for uniforms').option('');
 
   program.addCommand(init).addCommand(createForm).addCommand(miau);
 
