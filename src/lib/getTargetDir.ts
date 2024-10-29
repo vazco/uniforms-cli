@@ -1,3 +1,2 @@
-export const getTargetDir = (targetDir: string | undefined) => {
-  return targetDir?.trim().replace(/\/+$/g, '');
-};
+export const getTargetDir = (targetDir: string | undefined) =>
+  targetDir?.trim().replace(/\/+$/g, '');
