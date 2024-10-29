@@ -1,9 +1,7 @@
 {
   "extends": [
     "airbnb",
-    "airbnb-typescript",
-    "plugin:jsx-a11y/recommended",
-    "prettier"
+    "airbnb-typescript"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
