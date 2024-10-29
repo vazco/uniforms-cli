@@ -14,7 +14,10 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "dev": "unbuild && npm link && uniforms-cli"
+    "dev": "unbuild && npm link && uniforms-cli",
+    "lint:code": "eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content --ext ts,tsx .",
+    "lint:types": "tsc --noEmit",
+    "lint": "npm run lint:code && npm run lint:types && npm run build"
   },
   "bin": {
     "uniforms-cli": "index.js"
@@ -26,7 +29,6 @@
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "18.0.0",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-react": "7.37.1",
     "kolorist": "1.7.0",
     "prettier": "3.3.3",
     "prompts": "^2.4.2",
