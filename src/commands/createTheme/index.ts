@@ -42,7 +42,10 @@ export const createTheme = new Command()
   .name('createTheme')
   .description('Creates new uniforms theme template')
   .option('-n, --name <name>', 'Insert theme name')
-  .option('-s, --skip', 'skip custom dir question, and create in current dir')
+  .option(
+    '-s, --skip',
+    'skip custom directory question, and create in current directory',
+  )
   .option(
     '-e, --extension <extension>',
     `Select extension (${fileTypes.map(({ value }) => value).join(', ')})`,
