@@ -13,9 +13,6 @@ export const getDefaultPrompts = ({
   const foundBridge = bridgeImports[bridge as Bridges];
   const foundTheme = themeImports[theme as Themes];
 
-  console.log('foundBridge:', foundBridge);
-  console.log('foundTheme:', foundTheme);
-
   return [
     {
       type: () => (foundBridge ? null : 'select'),
