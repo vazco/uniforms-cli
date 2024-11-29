@@ -10,8 +10,9 @@ type CreateFormArgs = {
 
 export const createForm = ({ theme, bridge }: CreateFormArgs) => {
   const bridgeImport = bridgeImports[bridge];
-  const themeImport = `import { AutoForm } from '${themeImports[theme]}'`;
-  if (!bridgeImport || !themeImport) {
+  const themeImported = themeImports[theme];
+  const themeImport = `import { AutoForm } from '${themeImported}'`;
+  if (!bridgeImport || !themeImported) {
     throw new Error(red('No bridge or theme'));
   }
   const schemaCode = formSchemas[bridge];

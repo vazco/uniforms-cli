@@ -3,11 +3,11 @@ import fs from 'node:fs';
 
 export const createFolder = ({
   folderName,
-  directory = process.cwd(),
+  directory,
   customDirPath,
 }: {
   folderName: string;
-  directory?: string;
+  directory: string;
   customDirPath?: string;
 }) => {
   const dirPath = path.join(
