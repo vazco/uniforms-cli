@@ -4,8 +4,6 @@ import path from 'node:path';
 import os from 'node:os';
 import { getThemeAndBridgeFromPackageJSON } from '../src/lib/getThemeAndBridgeFromPackageJSON';
 import { packagesToBridges, packagesToThemes } from '../src/consts';
-import { Bridges } from '../src/types';
-import { findNearestPackageJson } from '../src/lib/findNearestPackageJson';
 
 describe('getThemeAndBridgeFromPackageJSON', () => {
   let tempDir: string;
