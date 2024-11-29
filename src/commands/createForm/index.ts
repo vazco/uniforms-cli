@@ -57,7 +57,10 @@ const customDirPathPrompt: PromptObject = {
 export const createForm = new Command()
   .name('createForm')
   .description('Creates new uniforms form template')
-  .option('-s, --skip', 'skip custom dir question, and create in current dir')
+  .option(
+    '-s, --skip',
+    'skip custom directory question, and create in current directory',
+  )
   .option(
     '-e, --extension <extension>',
     `Select extension (${fileTypes.map(({ value }) => value).join(', ')})`,

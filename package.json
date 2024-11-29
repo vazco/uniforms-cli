@@ -30,8 +30,9 @@
     "eslint-config-airbnb-typescript": "18.0.0",
     "eslint-config-prettier": "9.1.0",
     "kolorist": "1.7.0",
+    "node-fetch": "3.3.2",
     "prettier": "3.3.3",
-    "prompts": "^2.4.2",
+    "prompts": "2.4.2",
     "typescript": "5.6.3",
     "typescript-eslint": "8.8.1",
     "unbuild": "2.0.0"
