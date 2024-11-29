@@ -115,6 +115,6 @@ export const packagesToThemes = {
 };
 
 export const fileTypes = [
-  { color: blue, title: '.tsx', value: 'tsx' },
-  { color: red, title: '.jsx', value: 'jsx' },
+  { color: blue, title: 'Typescript', value: 'tsx' },
+  { color: red, title: 'Javascript', value: 'jsx' },
 ];
