@@ -23,3 +23,5 @@ jobs:
         run: npm run coverage
       - name: Report coverage
         uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
