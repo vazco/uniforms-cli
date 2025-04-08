@@ -1,11 +1,26 @@
 {
-  "name": "uniforms-cli",
+  "name": "@vazco/uniforms-cli",
   "version": "1.0.0",
   "description": "CLI for uniforms",
-  "type": "module",
+  "keywords": [
+    "cli",
+    "uniforms",
+    "uniforms-cli"
+  ],
+  "homepage": "https://github.com/vazco/uniforms-cli#readme",
+  "bugs": {
+    "url": "https://github.com/vazco/uniforms-cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vazco/uniforms-cli.git"
+  },
   "license": "MIT",
-  "engines": {
-    "node": ">=16.0.0"
+  "author": "Ernest Teluk",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "uniforms-cli": "index.js"
   },
   "files": [
     "dist/index.mjs",
@@ -20,9 +35,6 @@
     "lint:code": "eslint --ext ts .",
     "lint:types": "tsc --noEmit",
     "lint": "npm run lint:code && npm run lint:types && npm run build"
-  },
-  "bin": {
-    "uniforms-cli": "index.js"
   },
   "devDependencies": {
     "@types/prompts": "2.4.2",
@@ -40,5 +52,8 @@
     "typescript-eslint": "8.8.1",
     "unbuild": "2.0.0",
     "vitest": "2.1.6"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
