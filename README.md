@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <strong>uniforms-cli is package of handy commands to <a href="https://uniforms.tools/">Uniforms</a></strong>
+    <strong>@vazco/uniforms-cli is package of handy commands to <a href="https://uniforms.tools/">Uniforms</a></strong>
 </p>
 
 <p align="center">
@@ -35,9 +35,9 @@ Creates new uniforms theme template
 ## Usage example
 
 ```bash
-npx uniforms-cli init
+npx @vazco/uniforms-cli init
 ```
 
 # License
 
-**uniforms-cli packages are [MIT licensed](https://github.com/vazco/uniforms-cli/blob/main/LICENSE).**
+**@vazco/uniforms-cli packages are [MIT licensed](https://github.com/vazco/uniforms-cli/blob/main/LICENSE).**
